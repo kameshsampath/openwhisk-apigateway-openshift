@@ -1,0 +1,26 @@
+
+= Deploying OpenWhisk API Gateway on OpenShift
+
+This project allows you to deploy https://github.com/apache/incubator-openwhisk-apigateway[OpenWhisk API Gateway] on to OpenShift
+
+== Deploy OpenWhisk API Gateway
+
+[code,sh]
+----
+oc apply -f apigateway.yaml
+oc apply -f apigateway_mgmt.yaml
+----
+
+
+== Create a test action 
+
+[code,sh]
+----
+cd test
+wsk -i action create chant chant.js --web true
+wsk api create /api /chant get chant --response-type json
+wsk -i api create /api /chant get chant --response-type json
+wsk -i -v api list
+----
+
+Using the URL got from `wsk -i -v api list`, you can fire normal HTTP REST calls to trigger and get reponse from Actions
